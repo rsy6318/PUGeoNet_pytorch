@@ -10,6 +10,6 @@ cd evaluation/p2f
 cmake .  
 make  
 ```  
-Secondly run /eval.py to upsample the test point cloud.
-Then run /evaluation/cal_p2f.py to compute the P2F between point cloud and mesh.
-Finally, run /evaluation/cal_metric.py to compute the metric(CD, HD, P2F).
+Secondly run /eval.py to upsample the test point cloud.  
+Then run /evaluation/cal_p2f.py to compute the P2F between point cloud and mesh.  
+Finally, run /evaluation/cal_metric.py to compute the metric(CD, HD, P2F).  
