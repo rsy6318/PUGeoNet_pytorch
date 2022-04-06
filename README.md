@@ -4,7 +4,7 @@ run [prepare_data/mesh2ply.py](prepare_data/mesh2ply.py) and [prepare_data/ply2p
 You can download our prepared data [here](https://tjueducn-my.sharepoint.com/:f:/g/personal/rsy6318_tju_edu_cn/EqwtghjBbURFvM6eymC8C3cBdA4aE1EaaPuitk02YwGP8w?e=cLbdsm).
 ## Training
 run [main.py](main.py) to training model with different upsample ratios.  
-Our trained models are saved in [logx4](logx4), [logx8](logx8), [logx12](logx12) and [logx16](logx16).  
+Our trained models are saved in [logx4](https://github.com/rsy6318/PUGeoNet_pytorch/tree/main/log_x4), [logx8](https://github.com/rsy6318/PUGeoNet_pytorch/tree/main/log_x8), [logx12](https://github.com/rsy6318/PUGeoNet_pytorch/tree/main/log_x12) and [logx16](https://github.com/rsy6318/PUGeoNet_pytorch/tree/main/log_x16).  
 ## Testing
 ### Upsampling point cloud
 run [evaluation/eval.py](evaluation/eval.py)  
