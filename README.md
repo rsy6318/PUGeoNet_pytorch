@@ -7,7 +7,7 @@ run [main.py](main.py) to training model with different upsample ratios.
 Our trained models are saved in [logx4](logx4), [logx8](logx8), [logx12](logx12) and [logx16](logx16).  
 ## Testing
 ### Upsampling point cloud
-run eval.py  
+run [evaluation/eval.py](evaluation/eval.py)  
 ### Evaluation metric
 
 First you need to comple the [P2F evaluation](https://github.com/yulequan/PU-Net).  
