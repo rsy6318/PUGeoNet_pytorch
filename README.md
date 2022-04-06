@@ -6,7 +6,7 @@ run [main.py](https://github.com/rsy6318/PUGeoNet_pytorch/blob/main/main.py) to 
 ## Testing
 ### Upsampling point cloud
 run eval.py  
-### Calculating metric
+### Evaluation metric
 
 First you need to comple the [P2F evaluation](https://github.com/yulequan/PU-Net).  
 ```  
