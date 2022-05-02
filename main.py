@@ -114,6 +114,7 @@ if __name__=='__main__':
     optimizer=torch.optim.Adam(learnable_params,lr=current_lr)
     scheduler = CosineAnnealingLR(optimizer, arg.max_epoch, eta_min=current_lr)
     for epoch in range(arg.max_epoch):
+        scheduler.step()
         loss_sum_all=[]
         loss_sum_dense_cd = []
         loss_sum_dense_normal = []
