@@ -5,16 +5,17 @@ import torch.utils.data as data
 import open3d as o3d
 
 class dataset_patch(data.Dataset):
-    def __init__(self, up_ratio, data_path,jitter=False,jitter_sigma=0.03,jitter_max=0.05):
+    def __init__(self, up_ratio, data_path,jitter=False,jitter_sigma=0.03,jitter_max=0.05,mode='train',scale=True):
         super(dataset_patch,self).__init__()
         assert up_ratio in [4,8,12,16], 'upratio should be one of [4, 8, 12, 16]'
         self.jitter=jitter
         self.jitter_sigma = jitter_sigma
         self.jitter_max = jitter_max
+        self.scale=scale
         basic_root=os.path.join(data_path,'basic')
         label_root=os.path.join(data_path,'%d'%up_ratio)
         name_list=os.listdir(basic_root)
-
+        self.mode=mode
         self.basic_set=[]
         self.label_set=[]
         for name in name_list:
@@ -62,7 +63,10 @@ class dataset_patch(data.Dataset):
 
     def augment_data(self,input,sparse_normal,label,label_normal):
         input,sparse_normal,label,label_normal=self.rotate_point_cloud_and_gt(input,sparse_normal,label,label_normal)
-        input,label,scale=self.random_scale_point_cloud_and_gt(input,label,scale_low=0.8,scale_high=1.2)
+        if self.scale==True:
+            input,label,scale=self.random_scale_point_cloud_and_gt(input,label,scale_low=0.8,scale_high=1.2)
+        else:
+            scale=np.array([1]).astype(np.float32).squeeze()
         if self.jitter:
             input=self.jitter_perturbation_point_cloud(input,sigma=self.jitter_sigma,clip=self.jitter_max)
         return input,sparse_normal,label,label_normal,scale
@@ -72,8 +76,10 @@ class dataset_patch(data.Dataset):
         # return input sparse patch, gt sparse normal, gt dense patch, gt dense normal
         input_sparse_patch,gt_sparse_normal,gt_dense_patch,gt_dense_normal=self.basic_set[item,:,0:3],self.basic_set[item,:,3:],self.label_set[item,:,0:3],self.label_set[item,:,3:]
 
-        input_sparse_patch, gt_sparse_normal, gt_dense_patch, gt_dense_normal,radius=self.augment_data(input_sparse_patch,gt_sparse_normal,gt_dense_patch,gt_dense_normal)
-
+        if self.mode=='train':
+            input_sparse_patch, gt_sparse_normal, gt_dense_patch, gt_dense_normal,radius=self.augment_data(input_sparse_patch,gt_sparse_normal,gt_dense_patch,gt_dense_normal)
+        else:
+            radius=np.array([1]).astype(np.float32).squeeze()
         return torch.from_numpy(input_sparse_patch.astype(np.float32)).transpose(0,1),torch.from_numpy(gt_sparse_normal.astype(np.float32)).transpose(0,1),torch.from_numpy(gt_dense_patch.astype(np.float32)).transpose(0,1),torch.from_numpy(gt_dense_normal.astype(np.float32)).transpose(0,1),torch.from_numpy(np.array(radius).astype(np.float32))
 
 if __name__=='__main__':
