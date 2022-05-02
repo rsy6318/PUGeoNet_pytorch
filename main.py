@@ -10,6 +10,7 @@ from glob import glob
 from pc_util import  normalize_point_cloud, farthest_point_sample, group_points
 from datetime import datetime
 from tqdm import tqdm, trange
+from torch.optim.lr_scheduler import CosineAnnealingLR
 #print(torch.cuda.is_available())
 
 def log_string(out_str):
@@ -73,7 +74,7 @@ if __name__=='__main__':
     # for phase train
     #parser.add_argument('--log_dir', default='log', help='Log dir [default: log]')
     parser.add_argument('--batch_size', type=int, default=8, help='Batch Size during training')
-    parser.add_argument('--max_epoch', type=int, default=600, help='Epoch to run')
+    parser.add_argument('--max_epoch', type=int, default=400, help='Epoch to run')
     parser.add_argument('--learning_rate', type=float, default=0.001)
     parser.add_argument('--min_lr', type=float, default=0.00001)
     parser.add_argument('--reg_normal1', type=float, default=0.1)
@@ -111,7 +112,7 @@ if __name__=='__main__':
     current_lr=arg.learning_rate
 
     optimizer=torch.optim.Adam(learnable_params,lr=current_lr)
-
+    scheduler = CosineAnnealingLR(optimizer, arg.max_epoch, eta_min=current_lr)
     for epoch in range(arg.max_epoch):
         loss_sum_all=[]
         loss_sum_dense_cd = []
@@ -168,13 +169,5 @@ if __name__=='__main__':
         log_string('epoch: %d total loss: %f, cd: %f, dense normal: %f, sparse normal: %f\n' % (
                     epoch, round(loss_sum_all.mean(), 7), round(loss_sum_dense_cd.mean(), 7), round(loss_sum_dense_normal.mean(), 7),
                     round(loss_sum_sparse_normal.mean(), 7)))
-        if epoch%10==0:
-            torch.save(model.state_dict(),os.path.join(arg.log_dir,'model_%d.t7'%epoch))
-
-        if epoch%20==0 and epoch>0:
-            current_lr = current_lr * 0.8
-            if current_lr < arg.min_lr:
-                current_lr = arg.min_lr
-            for param_group in optimizer.param_groups:
-                param_group['lr'] = current_lr
+        
     torch.save(model.state_dict(), os.path.join(arg.log_dir, 'model.t7'))
