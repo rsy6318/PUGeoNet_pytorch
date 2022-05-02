@@ -100,7 +100,7 @@ if __name__=='__main__':
     LOG_FOUT.write(os.path.abspath(__file__) + '\n')
     LOG_FOUT.write(str(arg) + '\n')
 
-    dataset = dataset_patch(arg.up_ratio,arg.data_path,jitter=True,jitter_max=arg.jitter_max, jitter_sigma=arg.jitter_sigma)
+    dataset = dataset_patch(arg.up_ratio,arg.data_path,jitter=False,jitter_max=arg.jitter_max, jitter_sigma=arg.jitter_sigma,mode='train')
     dataloader=torch.utils.data.DataLoader(dataset,batch_size=arg.batch_size,shuffle=True,drop_last=True,num_workers=8)
 
 
