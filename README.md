@@ -1,7 +1,7 @@
 # PUGeoNet_pytorch  
 [Tensorflow version](https://github.com/ninaqy/PUGeo)
 ## Data Preparation  
-download raw mesh data from https://drive.google.com/drive/folders/1n2lf4am9k3hy3ci4W20XiMkXwJKwyg8f?usp=sharing.
+download raw mesh data from https://drive.google.com/drive/folders/1n2lf4am9k3hy3ci4W20XiMkXwJKwyg8f?usp=sharing. \
 run [prepare_data/mesh2ply.py](prepare_data/mesh2ply.py) and [prepare_data/ply2patch.py](prepare_data/ply2patch.py) to prepare the training and testing data.  
 
 ## Training
